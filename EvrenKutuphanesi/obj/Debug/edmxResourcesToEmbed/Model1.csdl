@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EvrenKutuphanesiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Personeller">
+    <Key>
+      <PropertyRef Name="personel_id" />
+    </Key>
+    <Property Name="personel_id" Type="Int32" Nullable="false" />
+    <Property Name="personel_ad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="personel_soyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="personel_tc" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+    <Property Name="personel_tel" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+    <Property Name="personel_mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="personel_kullaniciAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="personel_Sifre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="EvrenKutuphanesiEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Personeller" EntityType="Self.Personeller" />
+    <EntitySet Name="Kullanicilar" EntityType="EvrenKutuphanesiModel.Kullanicilar" />
+    <EntitySet Name="Kaynaklar" EntityType="EvrenKutuphanesiModel.Kaynaklar" />
+    <EntitySet Name="Kitaplar" EntityType="EvrenKutuphanesiModel.Kitaplar" />
+    <EntitySet Name="sysdiagrams" EntityType="EvrenKutuphanesiModel.sysdiagrams" />
+    <AssociationSet Name="FK_Kitaplar_Kaynaklar" Association="EvrenKutuphanesiModel.FK_Kitaplar_Kaynaklar">
+      <End Role="Kaynaklar" EntitySet="Kaynaklar" />
+      <End Role="Kitaplar" EntitySet="Kitaplar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Kitaplar_Kullanicilar" Association="EvrenKutuphanesiModel.FK_Kitaplar_Kullanicilar">
+      <End Role="Kullanicilar" EntitySet="Kullanicilar" />
+      <End Role="Kitaplar" EntitySet="Kitaplar" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Kullanicilar">
+    <Key>
+      <PropertyRef Name="kullanici_id" />
+    </Key>
+    <Property Name="kullanici_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kullanici_ad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="kullanici_soyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="kullanici_tc" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+    <Property Name="kullanici_tel" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+    <Property Name="kullanici_mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="kullanici_ceza" Type="Double" />
+    <Property Name="kullanici_cinsiyet" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Kitaplar" Relationship="EvrenKutuphanesiModel.FK_Kitaplar_Kullanicilar" FromRole="Kullanicilar" ToRole="Kitaplar" />
+  </EntityType>
+  <EntityType Name="Kaynaklar">
+    <Key>
+      <PropertyRef Name="kaynaklar_id" />
+    </Key>
+    <Property Name="kaynaklar_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kaynaklar_ad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="kaynak_yazar" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="kaynak_yayinci" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="kaynak_sayfasayisi" Type="Int32" />
+    <Property Name="kaynak_basimtarihi" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Kitaplar" Relationship="EvrenKutuphanesiModel.FK_Kitaplar_Kaynaklar" FromRole="Kaynaklar" ToRole="Kitaplar" />
+  </EntityType>
+  <EntityType Name="Kitaplar">
+    <Key>
+      <PropertyRef Name="kayit_id" />
+    </Key>
+    <Property Name="kayit_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kullanici_id" Type="Int32" />
+    <Property Name="kitap_id" Type="Int32" />
+    <Property Name="alis_tarih" Type="DateTime" Precision="3" />
+    <Property Name="son_tarih" Type="DateTime" Precision="3" />
+    <Property Name="durum" Type="Boolean" />
+    <NavigationProperty Name="Kaynaklar" Relationship="EvrenKutuphanesiModel.FK_Kitaplar_Kaynaklar" FromRole="Kitaplar" ToRole="Kaynaklar" />
+    <NavigationProperty Name="Kullanicilar" Relationship="EvrenKutuphanesiModel.FK_Kitaplar_Kullanicilar" FromRole="Kitaplar" ToRole="Kullanicilar" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_Kitaplar_Kaynaklar">
+    <End Type="EvrenKutuphanesiModel.Kaynaklar" Role="Kaynaklar" Multiplicity="0..1" />
+    <End Type="EvrenKutuphanesiModel.Kitaplar" Role="Kitaplar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kaynaklar">
+        <PropertyRef Name="kaynaklar_id" />
+      </Principal>
+      <Dependent Role="Kitaplar">
+        <PropertyRef Name="kitap_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Kitaplar_Kullanicilar">
+    <End Type="EvrenKutuphanesiModel.Kullanicilar" Role="Kullanicilar" Multiplicity="0..1" />
+    <End Type="EvrenKutuphanesiModel.Kitaplar" Role="Kitaplar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kullanicilar">
+        <PropertyRef Name="kullanici_id" />
+      </Principal>
+      <Dependent Role="Kitaplar">
+        <PropertyRef Name="kullanici_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EvrenKutuphanesiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Kaynaklar">
+    <Key>
+      <PropertyRef Name="kaynaklar_id" />
+    </Key>
+    <Property Name="kaynaklar_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kaynaklar_ad" Type="nvarchar" MaxLength="50" />
+    <Property Name="kaynak_yazar" Type="nvarchar" MaxLength="50" />
+    <Property Name="kaynak_yayinci" Type="nvarchar" MaxLength="50" />
+    <Property Name="kaynak_sayfasayisi" Type="int" />
+    <Property Name="kaynak_basimtarihi" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Kitaplar">
+    <Key>
+      <PropertyRef Name="kayit_id" />
+    </Key>
+    <Property Name="kayit_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kullanici_id" Type="int" />
+    <Property Name="kitap_id" Type="int" />
+    <Property Name="alis_tarih" Type="datetime" />
+    <Property Name="son_tarih" Type="datetime" />
+    <Property Name="durum" Type="bit" />
+  </EntityType>
+  <EntityType Name="Kullanicilar">
+    <Key>
+      <PropertyRef Name="kullanici_id" />
+    </Key>
+    <Property Name="kullanici_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kullanici_ad" Type="nvarchar" MaxLength="50" />
+    <Property Name="kullanici_soyad" Type="nvarchar" MaxLength="50" />
+    <Property Name="kullanici_tc" Type="nvarchar" MaxLength="11" />
+    <Property Name="kullanici_tel" Type="nvarchar" MaxLength="11" />
+    <Property Name="kullanici_mail" Type="nvarchar" MaxLength="50" />
+    <Property Name="kullanici_ceza" Type="float" />
+    <Property Name="kullanici_cinsiyet" Type="nvarchar" MaxLength="1" />
+  </EntityType>
+  <EntityType Name="Personeller">
+    <Key>
+      <PropertyRef Name="personel_id" />
+    </Key>
+    <Property Name="personel_id" Type="int" Nullable="false" />
+    <Property Name="personel_ad" Type="nvarchar" MaxLength="50" />
+    <Property Name="personel_soyad" Type="nvarchar" MaxLength="50" />
+    <Property Name="personel_tc" Type="nvarchar" MaxLength="11" />
+    <Property Name="personel_tel" Type="nvarchar" MaxLength="11" />
+    <Property Name="personel_mail" Type="nvarchar" MaxLength="50" />
+    <Property Name="personel_kullaniciAd" Type="nvarchar" MaxLength="50" />
+    <Property Name="personel_Sifre" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK_Kitaplar_Kaynaklar">
+    <End Role="Kaynaklar" Type="Self.Kaynaklar" Multiplicity="0..1" />
+    <End Role="Kitaplar" Type="Self.Kitaplar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kaynaklar">
+        <PropertyRef Name="kaynaklar_id" />
+      </Principal>
+      <Dependent Role="Kitaplar">
+        <PropertyRef Name="kitap_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Kitaplar_Kullanicilar">
+    <End Role="Kullanicilar" Type="Self.Kullanicilar" Multiplicity="0..1" />
+    <End Role="Kitaplar" Type="Self.Kitaplar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kullanicilar">
+        <PropertyRef Name="kullanici_id" />
+      </Principal>
+      <Dependent Role="Kitaplar">
+        <PropertyRef Name="kullanici_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EvrenKutuphanesiModelStoreContainer">
+    <EntitySet Name="Kaynaklar" EntityType="Self.Kaynaklar" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Kitaplar" EntityType="Self.Kitaplar" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Kullanicilar" EntityType="Self.Kullanicilar" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Personeller" EntityType="Self.Personeller" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Kitaplar_Kaynaklar" Association="Self.FK_Kitaplar_Kaynaklar">
+      <End Role="Kaynaklar" EntitySet="Kaynaklar" />
+      <End Role="Kitaplar" EntitySet="Kitaplar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Kitaplar_Kullanicilar" Association="Self.FK_Kitaplar_Kullanicilar">
+      <End Role="Kullanicilar" EntitySet="Kullanicilar" />
+      <End Role="Kitaplar" EntitySet="Kitaplar" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
